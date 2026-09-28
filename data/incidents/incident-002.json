@@ -10,6 +10,13 @@
     "Worker thread utilization reached 100%",
     "Upstream cart service failing with HTTP 504 Gateway Timeout"
   ],
+  "live_signals": {
+    "cpu": "65%",
+    "memory": "81%",
+    "errors": "840",
+    "latency": "30.0 sec"
+  },
+  "deployment": "v2.3.9",
   "root_cause": "Missing HTTP client request timeout on third-party payment gateway integration causing worker threads to hang indefinitely.",
   "resolution": "Configured 3-second HTTP client socket timeout with circuit breaker pattern using Resilience4j.",
   "created_at": "2025-02-12T14:20:00Z",

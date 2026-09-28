@@ -11,7 +11,7 @@ import { useAgent } from './hooks/useAgent';
 
 export function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const { incidents, loading } = useIncidents();
+  const { incidents, loading, refreshIncidents } = useIncidents();
   const { investigation, investigating, runInvestigation, chatMessages, sendMessage } = useAgent();
 
   const handleInvestigate = (incident: any) => {
@@ -31,6 +31,7 @@ export function App() {
               onInvestigate={handleInvestigate}
               investigation={investigation}
               investigating={investigating}
+              onRefresh={refreshIncidents}
             />
           )}
           {activeTab === 'incidents' && (

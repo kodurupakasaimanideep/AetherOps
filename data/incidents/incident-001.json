@@ -4,12 +4,19 @@
   "service": "user-service",
   "severity": "CRITICAL",
   "status": "RESOLVED",
-  "summary": "Database connection pool saturated causing HTTP 500 errors across auth and user management endpoints.",
+  "summary": "Database connection pool saturated causing HTTP 500 errors across auth and user management endpoints after deployment v2.4.1.",
   "symptoms": [
     "HTTP 500 errors on /api/v1/auth and /api/v1/users",
     "Database connection pool active connections at 100/100 limit",
     "p99 latency spiked from 45ms to 12500ms"
   ],
+  "live_signals": {
+    "cpu": "88%",
+    "memory": "92%",
+    "errors": "1,420",
+    "latency": "12.5 sec"
+  },
+  "deployment": "v2.4.1",
   "root_cause": "Unclosed database connections in user activity tracking middleware introduced in v2.4.1 deployment.",
   "resolution": "Applied hotfix patch v2.4.2 to properly release DB connections in try-finally block and scaled max_connections temporarily to 200.",
   "created_at": "2025-02-10T08:14:22Z",

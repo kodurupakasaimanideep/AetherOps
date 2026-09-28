@@ -8,21 +8,23 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
     { id: 'incidents', label: 'Incidents', icon: AlertTriangle },
-    { id: 'memory', label: 'Hindsight Memory', icon: Database },
+    { id: 'memory', label: 'Organizational Memory', icon: Database },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between">
+    <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between select-none">
       <div>
-        <div className="p-6 flex items-center space-x-3 border-b border-slate-800">
-          <BrainCircuit className="w-8 h-8 text-indigo-400" />
-          <div>
-            <h1 className="text-lg font-bold text-white tracking-wide">OpsMind</h1>
-            <p className="text-xs text-indigo-400 font-medium">DevOps AI Copilot</p>
+        <div className="p-6 border-b border-slate-800">
+          <div className="flex items-center space-x-3 mb-2">
+            <BrainCircuit className="w-7 h-7 text-indigo-400 flex-shrink-0" />
+            <div>
+              <h1 className="text-lg font-bold text-white tracking-wide leading-none">OpsMemory AI</h1>
+            </div>
           </div>
+          <p className="text-[11px] text-slate-400 italic">"Every incident becomes knowledge for the next one."</p>
         </div>
         <nav className="p-4 space-y-1">
           {navItems.map((item) => {
@@ -32,24 +34,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
+                    ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 shadow-lg shadow-indigo-500/5'
                     : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
                 <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
       </div>
-      <div className="p-4 border-t border-slate-800 text-xs text-slate-500">
-        <p>Hindsight Engine v1.0</p>
-        <p className="text-emerald-400 flex items-center mt-1">
+      <div className="p-4 border-t border-slate-800 text-[11px] text-slate-500">
+        <p className="font-semibold text-slate-400">Hindsight Memory Active</p>
+        <p className="text-emerald-400 flex items-center mt-1 font-medium">
           <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-          Vector Memory Connected
+          2,481 Memories Loaded
         </p>
       </div>
     </aside>

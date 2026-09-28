@@ -35,7 +35,7 @@ class IncidentAgent:
             "step_number": 2,
             "tool_used": "log_inspector",
             "action": f"Inspecting application logs for service: {service}",
-            "observation": f"Retrieved log entries from data/logs directory",
+            "observation": "Retrieved log entries from data/logs directory",
             "timestamp": datetime.utcnow().isoformat() + "Z"
         })
         logs_content = self.tools.inspect_logs(service)
@@ -43,7 +43,7 @@ class IncidentAgent:
         steps.append({
             "step_number": 3,
             "tool_used": "runbook_search",
-            "action": f"Searching runbooks for matched symptoms",
+            "action": "Searching runbooks for matched symptoms",
             "observation": "Found relevant operational runbooks in data/runbooks/",
             "timestamp": datetime.utcnow().isoformat() + "Z"
         })
@@ -74,10 +74,28 @@ class IncidentAgent:
 
         root_cause = incident.get("root_cause")
         if not root_cause:
-            if "database" in service.lower() or "inventory" in service.lower():
-                root_cause = "Missing composite index on inventory_items(tenant_id, updated_at) causing high CPU sequential table scans."
+            if "database" in service.lower() or "inventory" in service.lower() or "user" in service.lower():
+                root_cause = "Database connection pool exhaustion & unindexed table scans."
             else:
                 root_cause = f"System resource contention or unhandled failure in {service}."
+
+        recommended_checklist = [
+            "Check database connection pool limits & active queries",
+            f"Compare deployment {incident.get('deployment', 'v2.5.0')} schema migration changes",
+            "Verify HTTP client socket timeouts and circuit breakers",
+            "Review historical INC-001 & INC-002 resolution steps"
+        ]
+
+        evidence_chain = []
+        for mem in matched_memories:
+            evidence_chain.append({
+                "title": mem.get("title", ""),
+                "incident_id": mem.get("id", ""),
+                "match_score": mem.get("match_score", 85.0),
+                "evidence_type": "Same error pattern & service domain",
+                "description": mem.get("summary", ""),
+                "resolution": mem.get("resolution", "Increased pool size & optimized indexes")
+            })
 
         remediation_steps = [
             "1. Inspect active database queries and connection limits using pg_stat_activity.",
@@ -90,9 +108,11 @@ class IncidentAgent:
             "incident_id": incident_id,
             "status": "INVESTIGATION_COMPLETE",
             "root_cause": root_cause,
-            "confidence_score": 94.5,
+            "confidence_score": 92.4,
             "matched_past_incidents": matched_memories,
+            "evidence_chain": evidence_chain,
             "investigation_steps": steps,
+            "recommended_checklist": recommended_checklist,
             "recommended_runbook": runbook_names[0] if runbook_names else "database-recovery.md",
             "remediation_steps": remediation_steps,
             "ai_analysis_text": analysis

@@ -1,10 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from typing import List, Dict, Any
-from app.models.incident import Incident, IncidentCreate, IncidentUpdate
+from app.models.incident import Incident, IncidentCreate, IncidentUpdate, TeachAIRequest
 from app.services.incident_service import IncidentService
+from app.hindsight.client import HindsightClient
 
 router = APIRouter(prefix="/incidents", tags=["Incidents"])
 incident_service = IncidentService()
+hindsight = HindsightClient()
 
 @router.get("", response_model=List[Incident])
 def get_incidents():
@@ -27,3 +29,21 @@ def update_incident(incident_id: str, updates: IncidentUpdate):
     if not inc:
         raise HTTPException(status_code=404, detail="Incident not found")
     return inc
+
+@router.post("/{incident_id}/teach-ai")
+def teach_ai(incident_id: str, payload: TeachAIRequest):
+    inc = incident_service.get_incident(incident_id)
+    if not inc:
+        raise HTTPException(status_code=404, detail="Incident not found")
+
+    from datetime import datetime
+    updated = incident_service.update_incident(incident_id, {
+        "root_cause": payload.actual_root_cause,
+        "resolution": payload.fix_description,
+        "status": "RESOLVED",
+        "resolved_at": datetime.utcnow().isoformat() + "Z"
+    })
+
+    # Save memory into Hindsight
+    hindsight.add_incident_memory(updated)
+    return {"message": "Memory saved to organizational knowledge!", "incident": updated}

@@ -10,6 +10,13 @@
     "Cache hit ratio dropped from 94% to 12%",
     "Database read IOPS increased 8x"
   ],
+  "live_signals": {
+    "cpu": "45%",
+    "memory": "98%",
+    "errors": "310",
+    "latency": "1.2 sec"
+  },
+  "deployment": "v1.8.0",
   "root_cause": "Session token TTL was set to infinity in new feature release causing Redis memory usage to reach maxmemory threshold without eviction policy.",
   "resolution": "Set volatile-lru eviction policy and updated session store with explicit 24-hour TTL.",
   "created_at": "2025-02-15T11:05:30Z",

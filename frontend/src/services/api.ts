@@ -1,4 +1,4 @@
-import { Incident, InvestigationResult } from '../types/incident';
+import { Incident, InvestigationResult, TeachAIPayload } from '../types/incident';
 
 const API_BASE = 'http://localhost:8000/api/v1';
 
@@ -18,6 +18,16 @@ export const apiService = {
   async investigateIncident(id: string): Promise<InvestigationResult> {
     const res = await fetch(`${API_BASE}/agent/investigate/${id}`, { method: 'POST' });
     if (!res.ok) throw new Error('Failed to run investigation');
+    return res.json();
+  },
+
+  async teachAI(id: string, payload: TeachAIPayload): Promise<any> {
+    const res = await fetch(`${API_BASE}/incidents/${id}/teach-ai`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('Failed to save to organizational memory');
     return res.json();
   },
 
