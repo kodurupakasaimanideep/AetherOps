@@ -1,0 +1,5 @@
+2025-02-15 11:00:10 [INFO] [cache-service] Redis server starting version 7.0.10
+2025-02-15 11:02:15 [WARN] [cache-service] Memory usage reached 90% of maxmemory (1.8GB / 2.0GB)
+2025-02-15 11:04:00 [WARNING] [cache-service] OOM command not allowed when used memory > 'maxmemory'
+2025-02-15 11:05:00 [FATAL] [cache-service] Container killed by OOMKiller (exit code 137). Memory used: 2.15GB
+2025-02-15 11:05:30 [ERROR] [api-gateway] Redis session lookup failed: Connection refused (127.0.0.1:6379)

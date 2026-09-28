@@ -1,0 +1,18 @@
+{
+  "id": "INC-004",
+  "title": "Inventory Analytics Query CPU Saturation",
+  "service": "inventory-service",
+  "severity": "HIGH",
+  "status": "OPEN",
+  "summary": "Unindexed database query on inventory logs causing high CPU utilization on primary DB instance.",
+  "symptoms": [
+    "Database CPU utilization sustained at 98%",
+    "Slow query log reporting 45+ second sequential scans on inventory_items table",
+    "Read latency spike across inventory dashboard"
+  ],
+  "root_cause": "Missing index on inventory_items(tenant_id, updated_at) after schema migration script.",
+  "resolution": "Under investigation by DevOps Agent. Suggested action: Execute CONCURRENTLY index creation on (tenant_id, updated_at).",
+  "created_at": "2025-02-18T09:12:00Z",
+  "resolved_at": null,
+  "tags": ["database", "cpu-spike", "missing-index", "postgresql"]
+}
