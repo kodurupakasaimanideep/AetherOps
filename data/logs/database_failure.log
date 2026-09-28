@@ -1,0 +1,9 @@
+2025-02-10 08:14:01 [INFO] [user-service] Starting DB pool manager with max_connections=100
+2025-02-10 08:14:05 [WARN] [user-service] DB connection pool usage at 85% (85/100)
+2025-02-10 08:14:12 [ERROR] [user-service] psycopg2.OperationalError: FATAL: remaining connection slots are reserved for non-replication superuser connections
+2025-02-10 08:14:15 [ERROR] [user-service] ConnectionPoolExhaustedException: Could not acquire connection from pool within 5000ms. Active: 100, Idle: 0, Waiting: 42
+2025-02-10 08:14:22 [FATAL] [user-service] Unhandled error in GET /api/v1/users - ConnectionPoolExhaustedException
+2025-02-10 08:14:30 [WARN] [user-service] Stack trace:
+  File "/app/middleware/activity.py", line 45, in track_user_activity
+    conn = db_pool.get_connection()
+    # ERROR: conn.close() missing in exception path!

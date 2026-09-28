@@ -1,0 +1,18 @@
+{
+  "id": "INC-002",
+  "title": "Payment Gateway Timeout & Cascading Latency",
+  "service": "payment-service",
+  "severity": "HIGH",
+  "status": "RESOLVED",
+  "summary": "External payment provider API latency caused thread pool starvation in payment service workers.",
+  "symptoms": [
+    "Payment checkout timed out after 30 seconds for 42% of users",
+    "Worker thread utilization reached 100%",
+    "Upstream cart service failing with HTTP 504 Gateway Timeout"
+  ],
+  "root_cause": "Missing HTTP client request timeout on third-party payment gateway integration causing worker threads to hang indefinitely.",
+  "resolution": "Configured 3-second HTTP client socket timeout with circuit breaker pattern using Resilience4j.",
+  "created_at": "2025-02-12T14:20:00Z",
+  "resolved_at": "2025-02-12T14:55:00Z",
+  "tags": ["payment", "timeout", "circuit-breaker", "thread-exhaustion"]
+}

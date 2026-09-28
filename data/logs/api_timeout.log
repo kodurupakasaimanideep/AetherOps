@@ -1,0 +1,5 @@
+2025-02-12 14:18:02 [INFO] [payment-service] Processing payment authorization req_98231
+2025-02-12 14:18:32 [ERROR] [payment-service] java.net.SocketTimeoutException: Read timed out after 30000ms connecting to https://api.stripe-mock.internal/v1/charges
+2025-02-12 14:18:35 [WARN] [payment-service] Thread pool ExecutorService[payment-workers] pool size 50, active 50, queued 120
+2025-02-12 14:19:00 [ERROR] [cart-service] HTTP 504 Gateway Timeout when calling http://payment-service:8080/v1/pay
+2025-02-12 14:20:00 [FATAL] [payment-service] Service health check failing: HTTP 503 Service Unavailable (Worker pool starved)
